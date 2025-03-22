@@ -55,7 +55,7 @@
     if (rows.length > 1) {
       const randomIndex = Math.floor(Math.random() * (rows.length - 1)) + 1; // Skip header
       const entry = rows[randomIndex];
-      document.getElementById("output").textContent = `📚 ${entry[0]}: "${entry[1]}"`;
+      document.getElementById("output").textContent = `${entry[0]}: "${entry[1]}"`;
     } else {
       document.getElementById("output").textContent = "No data available.";
     }
