@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Spreadsheet Entry</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Random Spreadsheet Entry</h1>
+  <button onclick="getRandomEntry()">Get Random Entry</button>
+  <div id="output">Find a memory</div>
+</div>
+
+<script>
+  const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSQtcyNAvHx0Xpstni7E5bCu9huf-qR8vnIlVWlrIdkLBw2KYfuaGx0FlfUaf01VemB3hx0Y4I9hxeF/pub?output=csv'; 
+
+  async function fetchData() {
+    const response = await fetch(sheetUrl);
+    const data = await response.text();
+    const rows = data.split('\n').map(row => row.split(','));
+    return rows;
+  }
+
+  async function getRandomEntry() {
+    const rows = await fetchData();
+    if (rows.length > 1) {
+      const randomIndex = Math.floor(Math.random() * (rows.length - 1)) + 1; // Skip header
+      const entry = rows[randomIndex];
+      document.getElementById("output").textContent = `📚 ${entry[0]}: "${entry[1]}"`;
+    } else {
+      document.getElementById("output").textContent = "No data available.";
+    }
+  }
+</script>
+
+</body>
+</html>
