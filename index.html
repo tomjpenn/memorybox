@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our digital memory box</title>
+  <title>Our digital memory jar</title>
   <link rel="icon" href="https://tomjpenn.github.io/memorybox/favicon.png" type="image/png">
   <style>
     body {
@@ -38,31 +38,28 @@
 <div class="container">
   <!--<h1>Random Spreadsheet Entry</h1>-->
   <button onclick="getRandomEntry()">Click Me</button>
-  <div id="output">Welcome to our digital memory box</div>
+  <div id="output">Welcome to our digital memory jar</div>
 </div>
 
 <script>
   const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSQtcyNAvHx0Xpstni7E5bCu9huf-qR8vnIlVWlrIdkLBw2KYfuaGx0FlfUaf01VemB3hx0Y4I9hxeF/pub?output=csv'; 
 
   async function fetchData() {
-  const response = await fetch(sheetUrl);
-  const data = await response.text();
-  const rows = data.trim().split('\n').map(row => row.split(','));
-  return rows;
-}
+    const response = await fetch(sheetUrl);
+    const data = await response.text();
+    const rows = data.split('\n').map(row => row.split(','));
+    return rows;
+  }
 
-async function getRandomEntry() {
-  const rows = await fetchData();
-  const randomIndex = Math.floor(Math.random() * rows.length);
-  const entry = rows[randomIndex];
-  const name = entry[0];
-  const imageUrl = entry[1];
-
-  document.getElementById("output").innerHTML = `
-    <strong>${name}</strong><br>
-    <img src="${imageUrl}" alt="${name}" style="max-width: 300px; margin-top: 10px; border-radius: 8px;">
-  `;
-}
+  async function getRandomEntry() {
+    const rows = await fetchData();
+    if (rows.length > 1) {
+      const randomIndex = Math.floor(Math.random() * (rows.length - 1)) + 1; // Skip header
+      const entry = rows[randomIndex];
+      document.getElementById("output").textContent = `${entry[0]}`;
+    } else {
+      document.getElementById("output").textContent = "No data available.";
+    }
   }
 </script>
 
